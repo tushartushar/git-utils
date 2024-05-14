@@ -20,3 +20,10 @@ jobs:
         uses: DesigniteTools/DJAction@v2.0
         with:
           PAT: ${{ secrets.PAT }}
+      - name: DesigniteJava Incremental Analysis
+        uses: DesigniteTools/dj-incremental-analysis@v1.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          designite-output-old: designite-output-${{ github.event.before }}
+          designite-output-new: designite-output-${{ github.sha }}
+          repo-name: ${{ github.repository }}

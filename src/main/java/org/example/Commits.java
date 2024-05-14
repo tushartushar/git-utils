@@ -1,5 +1,6 @@
 package java.org.example;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -130,5 +131,42 @@ public class Commits {
 
     public int getTotalCommits() {
         return totalCommits;
+    }
+
+    public static String copyProjectToTempDir(String sourceFolderPath, String projectName, String tempLocation) {
+        String temporaryFolderLocationFromSystem = getTempFolder(tempLocation);
+
+        File srcDir = new File(sourceFolderPath);
+        File destDir = new File(temporaryFolderLocationFromSystem, projectName);
+        try {
+            if (destDir.exists()) {
+                FileUtils.deleteDirectory(destDir);
+            }
+            FileUtils.copyDirectory(srcDir, destDir);
+        } catch (IOException e) {
+        }
+        return destDir.getAbsolutePath();
+    }
+    private static String getTempFolder(String tempLocation) {
+        String tempDir = tempLocation;
+        if (tempDir == null)
+            tempDir = System.getProperty("java.io.tmpdir");
+        else
+            createTemp(tempDir);
+        return tempDir;
+    }
+    private static void createTemp(String tempDir) {
+        File f = new File(tempDir);
+        if (f.exists() && f.isDirectory()) {
+            return;
+        }
+        try{
+            if (!f.mkdirs()){
+                System.exit(12);
+            }
+        }
+        catch (SecurityException ex){
+            System.exit(13);
+        }
     }
 }
