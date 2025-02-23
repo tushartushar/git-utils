@@ -17,13 +17,14 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: DesigniteJava Action
-        uses: DesigniteTools/DJAction@v2.0
+        uses: DesigniteTools/DJAction@v2.0.0
         with:
           PAT: ${{ secrets.PAT }}
-      - name: DesigniteJava Incremental Analysis
-        uses: DesigniteTools/dj-incremental-analysis@v1.0.0
+      - name: Designite Incremental Code Quality Analysis
+        uses: DesigniteTools/designite-incremental-analysis@v2.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           designite-output-old: designite-output-${{ github.event.before }}
           designite-output-new: designite-output-${{ github.sha }}
           repo-name: ${{ github.repository }}
+          tool-name: 'dj'
